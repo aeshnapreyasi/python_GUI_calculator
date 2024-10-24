@@ -1,0 +1,89 @@
+from tkinter import *
+
+
+def save():
+    error = ""
+    if entnumber1.get() == '':
+        error = "Enter the number 1"
+    if entnumber2.get() == '':
+        error = "Enter the number 2"
+    if error:
+        lblstatus.config(text=error)  # Display the error message
+        return
+    return True  # Indicate successful input
+
+
+def calculate(operation):
+    if save() is not True:  # Validate input first
+        return
+
+    number1 = float(entnumber1.get())
+    number2 = float(entnumber2.get())
+
+    if operation == 'add':
+        result = number1 + number2
+    elif operation == 'sub':
+        result = number2 - number1
+    elif operation == 'mul':
+        result = number1 * number2
+    elif operation == 'div':
+        if number1 == 0:
+            lblstatus.config(text="Cannot divide by zero")
+            return
+        result = number2 / number1
+    elif operation == 'remainder':
+        result = number2 % number1
+
+    entanswer.delete(0, END)  # Clear the entry before inserting the result
+    entanswer.insert(0, str(result))  # Insert the result into the entry
+
+
+root = Tk()
+
+frm1 = Frame(root)
+frm1.grid(row=0, column=0, padx=10, pady=10)
+
+#heading label
+lblheading = Label(frm1,text="My Calculator",font =("Helvetica",16))
+lblheading.grid(row=0,column=0,columnspan=3,pady=10)
+
+lblnumber1 = Label(frm1, text="Number 1:")
+lblnumber1.grid(row=0, column=0, sticky=W)
+
+entnumber1 = Entry(frm1)
+entnumber1.grid(row=0, column=1, columnspan=2, padx=5, pady=5)
+
+# Buttons
+b = Button(frm1, text="+", command=lambda: calculate('add'))
+b2 = Button(frm1, text="-", command=lambda: calculate('sub'))
+b3 = Button(frm1, text="*", command=lambda: calculate('mul'))
+b4 = Button(frm1, text="/", command=lambda: calculate('div'))
+b5 = Button(frm1, text="%", command=lambda: calculate('remainder'))
+
+# Layout for buttons
+b.grid(row=2, column=1, padx=3, pady=5)
+b2.grid(row=2, column=2, padx=2, pady=5)
+b3.grid(row=2, column=3, padx=3, pady=5)
+b4.grid(row=2, column=4, padx=3, pady=5)
+b5.grid(row=2, column=5, padx=3, pady=5)
+
+lblstatus = Label(frm1)
+lblstatus.grid(row=4, column=0, columnspan=6, pady=5)
+
+lblnumber2 = Label(frm1, text="Number 2:")
+lblnumber2.grid(row=5, column=0, sticky=W)
+
+entnumber2 = Entry(frm1)
+entnumber2.grid(row=5, column=1, columnspan=2, padx=5, pady=5)
+
+lblanswer = Label(frm1, text="Answer:")
+lblanswer.grid(row=6, column=0, sticky=W)
+
+entanswer = Entry(frm1)
+entanswer.grid(row=6, column=1, columnspan=2, padx=5, pady=5)
+
+# Configure grid weights for better resizing
+for i in range(6):
+    frm1.grid_columnconfigure(i, weight=1)
+
+root.mainloop()
